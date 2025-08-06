@@ -2,9 +2,11 @@ name: Python CI
 
 on:
   push:
-    branches: [main]
+    branches: [test]
   pull_request:
-    branches: [main]
+    branches: [test]
+  schedule:
+    - cron:  '15 19 * * *' ##execution of a task in the first minute of the month       
 
 jobs:
   build:
@@ -20,13 +22,35 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         
+    - name: Download UNSW-NB15 dataset
+      run: |
+        # Create the data directory as the notebook expects it.
+        mkdir -p data
+        
+        # NOTE: You must replace the placeholder URLs below with the actual
+        # download links for the UNSW-NB15 dataset parts.
+        # The dataset is commonly available on academic platforms or Kaggle.
+        echo "Downloading UNSW-NB15_1.csv..."
+        curl -L -o data/UNSW-NB15_1.csv 'https://example.com/unsw-nb15/UNSW-NB15_1.csv'
+        echo "Downloading UNSW-NB15_2.csv..."
+        curl -L -o data/UNSW-NB15_2.csv 'https://example.com/unsw-nb15/UNSW-NB15_2.csv'
+        echo "Downloading UNSW-NB15_3.csv..."
+        curl -L -o data/UNSW-NB15_3.csv 'https://example.com/unsw-nb15/UNSW-NB15_3.csv'
+        echo "Downloading UNSW-NB15_4.csv..."
+        curl -L -o data/UNSW-NB15_4.csv 'https://example.com/unsw-nb15/UNSW-NB15_4.csv'
+    
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        # Install tools for running notebooks in the CI environment
+        pip install nbformat ipykernel jupyter
 
-    - name: Run notebook tests (optional)
+    - name: Run notebook
       run: |
-        # Add your tests here, for example:
-        # pytest
-        echo "Add your tests here"
+        # Execute the notebook to ensure all cells run without errors.
+        # The `--execute` flag runs all cells.
+        # The `--to notebook` and `--output` flags save the executed notebook
+        # for inspection, if needed.
+        jupyter nbconvert --to notebook --execute notebooks/unsw_nb15_anomaly_detection.ipynb --output test_unsw_nb15_anomaly_detection.ipynb

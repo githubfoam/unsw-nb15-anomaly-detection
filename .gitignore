@@ -2,6 +2,11 @@
 data/
 
 # Ignore saved models
+# This ignores the specific model and scaler files saved by the notebook
+notebooks/isolation_forest_model.pkl
+notebooks/scaler.pkl
+
+# Keep the general models/ directory rule for good practice
 models/
 
 # Python environment
