@@ -37,9 +37,9 @@ jobs:
         chmod 600 ~/.kaggle/kaggle.json
 
         # Download the dataset
-        # The dataset name is "plibal/unsw-nb15" on Kaggle
+        # The dataset name is "kagglefoam/unsw-nb15" on Kaggle
         mkdir -p data
-        kaggle datasets download -d plibal/unsw-nb15 -p data
+        kaggle datasets download -d kagglefoam/unsw-nb15 -p data
 
         # Unzip the downloaded file
         unzip data/unsw-nb15.zip -d data
