@@ -2,9 +2,9 @@ name: Python CI
 
 on:
   push:
-    branches: [test]
+    branches: [main]
   pull_request:
-    branches: [test]
+    branches: [main]
   # Enables manual trigger from the GitHub Actions UI
   workflow_dispatch:
   schedule:
