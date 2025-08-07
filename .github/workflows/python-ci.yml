@@ -5,8 +5,10 @@ on:
     branches: [test]
   pull_request:
     branches: [test]
+  # Enables manual trigger from the GitHub Actions UI
+  workflow_dispatch:
   schedule:
-    - cron:  '15 19 * * *' ##execution of a task in the first minute of the month       
+    - cron:  '15 19 * * *' # Scheduled to run at 19:15 UTC every day   
 
 jobs:
   build:
