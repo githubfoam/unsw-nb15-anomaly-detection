@@ -1,1 +1,2 @@
 # unsw-nb15-anomaly-detection
+[![Python CI](https://github.com/githubfoam/unsw-nb15-anomaly-detection/actions/workflows/python-ci.yml/badge.svg)](https://github.com/githubfoam/unsw-nb15-anomaly-detection/actions/workflows/python-ci.yml)
