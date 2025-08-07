@@ -23,22 +23,36 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         
-    - name: Download UNSW-NB15 dataset
+    - name: Download UNSW-NB15 dataset from Kaggle
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
       run: |
-        # Create the data directory as the notebook expects it.
-        mkdir -p data
+        # Install Kaggle API client
+        pip install kaggle
         
-        # NOTE: You must replace the placeholder URLs below with the actual
-        # download links for the UNSW-NB15 dataset parts.
-        # The dataset is commonly available on academic platforms or Kaggle.
-        echo "Downloading UNSW-NB15_1.csv..."
-        curl -L -o data/UNSW-NB15_1.csv 'https://example.com/unsw-nb15/UNSW-NB15_1.csv'
-        echo "Downloading UNSW-NB15_2.csv..."
-        curl -L -o data/UNSW-NB15_2.csv 'https://example.com/unsw-nb15/UNSW-NB15_2.csv'
-        echo "Downloading UNSW-NB15_3.csv..."
-        curl -L -o data/UNSW-NB15_3.csv 'https://example.com/unsw-nb15/UNSW-NB15_3.csv'
-        echo "Downloading UNSW-NB15_4.csv..."
-        curl -L -o data/UNSW-NB15_4.csv 'https://example.com/unsw-nb15/UNSW-NB15_4.csv'
+        # Create .kaggle directory and configure with secrets
+        mkdir -p ~/.kaggle
+        echo "{\"username\":\"$KAGGLE_USERNAME\",\"key\":\"$KAGGLE_KEY\"}" > ~/.kaggle/kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
+
+        # Download the dataset
+        # The dataset name is "plibal/unsw-nb15" on Kaggle
+        mkdir -p data
+        kaggle datasets download -d plibal/unsw-nb15 -p data
+
+        # Unzip the downloaded file
+        unzip data/unsw-nb15.zip -d data
+        
+        # The dataset contains other files we don't need, so we move the
+        # specific CSVs and clean up.
+        mv data/UNSW-NB15_1.csv data/UNSW-NB15_2.csv data/UNSW-NB15_3.csv data/UNSW-NB15_4.csv data/
+        
+        # Clean up the zip file and other unnecessary files
+        rm data/unsw-nb15.zip
+        rm data/UNSW-NB15_BIN_CLASS.csv data/UNSW-NB15_GT.csv data/UNSW-NB15_MULTI_CLASS.csv data/UNSW-NB15_features.csv
+        
+        echo "✅ Dataset downloaded and prepared successfully."
     
         
     - name: Install dependencies
