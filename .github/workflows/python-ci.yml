@@ -38,7 +38,7 @@ jobs:
 
         # Download the dataset
         # The dataset name is "kagglefoam/unsw-nb15" on Kaggle
-        kaggle datasets download -d [your-username]/[your-dataset-name] -p data
+        kaggle datasets download -d kagglefoam/unsw-nb15 -p data
 
          # Unzip the downloaded file directly into the data directory
         unzip data/unsw-nb15.zip -d data
